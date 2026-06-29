@@ -40,18 +40,7 @@ The goal of this run was to train PraNet with the original PraNet-style training
 ## Training command
 
 ```bash
-python MyTrain.py \
-  --epoch 20 \
-  --batchsize 16 \
-  --trainsize 352 \
-  --train_path ./data/TrainDataset \
-  --train_save PraNet_Res2Net_20260622
-```
-
-The remote log command used `tee` to preserve the training output:
-
-```bash
-python MyTrain.py --epoch 20 --batchsize 16 --trainsize 352 --train_path ./data/TrainDataset --train_save PraNet_Res2Net_20260622 2>&1 | tee runs/20260622_pranet_train20/train.log
+python MyTrain.py --epoch 20 --batchsize 16 --trainsize 352 --train_path ./data/TrainDataset --train_save PraNet_Res2Net_20260622
 ```
 
 ## Training output
@@ -77,17 +66,9 @@ SHA256:
 
 The checkpoint file is not included in this repository because it is a large model artifact. The hash is recorded to identify the exact evaluated file.
 
-## Source evidence in material repository
+## Source evidence on workstation
 
-The detailed raw logs are kept in the material repository:
-
-```text
-https://github.com/AlwayszZZZ/codex-pranet-baseline-reproduction
-
-evidence/remote_runs/20260622_pranet_train20/train.log
-evidence/remote_runs/20260622_pranet_train20/env_and_command.txt
-evidence/remote_runs/20260622_pranet_train20/checkpoints.txt
-```
+The complete working records remain on the remote workstation and will be organised separately. Relevant records include the training log, environment and command record, checkpoint listing, and checksum record.
 
 ## Interpretation
 
