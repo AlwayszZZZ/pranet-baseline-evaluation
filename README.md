@@ -2,11 +2,7 @@
 
 This repository is a clean June-stage deliverable for the MSc dissertation project **Cross-Dataset Generalisation for Robust Polyp Segmentation**.
 
-It records the PraNet baseline reproduction and evaluation evidence in a compact form. The working/material repository is kept separately at:
-
-```text
-https://github.com/AlwayszZZZ/codex-pranet-baseline-reproduction
-```
+It records the PraNet baseline reproduction and evaluation evidence in a compact form. The complete working records are kept on the workstation and will be organised separately.
 
 This repository is not intended to be a full code release. It is an evidence package showing what was trained, how it was evaluated, and what results were obtained.
 
@@ -51,7 +47,7 @@ The checkpoint file itself is not uploaded because it is a large binary artifact
 
 ## Evaluation source of truth
 
-The final reported results are based on the official MATLAB evaluation. 
+The final reported results are based on the official MATLAB evaluation.
 The full MATLAB table is recorded in:
 
 ```text
