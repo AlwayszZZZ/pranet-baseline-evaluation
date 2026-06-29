@@ -37,7 +37,7 @@ The table below shows the main evaluation results of the official PraNet weights
 | ETIS-LaribPolypDB |    196 | PraNet                  | 0.627555 | 0.565739 | 0.600759 | 0.793297 | 0.807621 | 0.030750 |
 | ETIS-LaribPolypDB |    196 | PraNet_Res2Net_20260622 | 0.648443 | 0.584684 | 0.617012 | 0.802088 | 0.823030 | 0.027702 |
 
-The results show that PraNet performs well on Kvasir, CVC-ClinicDB, and CVC-300, but its scores decrease noticeably on CVC-ColonDB and ETIS-LaribPolypDB, indicating that its generalisation ability still needs improvement. The self-trained weights achieved slightly higher mean Dice and mean IoU scores than the official weights on all five test datasets. This suggests that the training process successfully produced an effective PraNet checkpoint.
+The results show that PraNet performs well on Kvasir, CVC-ClinicDB, and CVC-300, but its scores decrease noticeably on CVC-ColonDB and ETIS-LaribPolypDB, indicating that its generalisation ability still needs improvement. In this local evaluation run, the self-trained checkpoint achieved comparable or slightly higher mean Dice and mean IoU scores than the locally re-evaluated official checkpoint. This indicates that the training process produced a valid and usable PraNet checkpoint, rather than serving as a claim of superiority over the original PraNet model.
 
 ## 4. Comparison with the Results Reported in the PraNet Paper
 
@@ -63,14 +63,20 @@ This report mainly focuses on quantitative metrics. Visual comparison and failur
 
 The self-trained checkpoint used in this report is:
 
-`snapshots/PraNet_Res2Net_20260622/PraNet-19.pth`
+```text
+~/projects/PraNet0607-1/snapshots/PraNet_Res2Net_20260622/PraNet-19.pth
+```
 
-The training run was completed successfully and saved the final checkpoint `PraNet-19.pth`. The corresponding training summary, checkpoint record, evaluation command, and MATLAB evaluation summary are available in the GitHub repository:
+SHA256:
 
-[[GitHub evidence link](https://github.com/AlwayszZZZ/pranet-baseline-evaluation/)]
+```text
+76c16089d589985618ff08c132c805b047ce62d2a1dc469cf07ee032a62753ee
+```
 
-Key supporting files:
+The checkpoint file is not included in this repository because it is a large model artifact. The complete working records, including the training log, environment and command record, checkpoint listing, and checksum record, remain on the remote workstation and will be organised separately.
 
-* `evidence/remote_runs/20260622_pranet_train20/run_summary.md`
-* `evidence/remote_runs/20260622_selftrained_eval_pranet19/env_and_command.txt`
-* `evidence/matlab_evaluation/summary.md`
+Key supporting files in this repository are:
+
+* `evidence/training_summary.md`
+* `evidence/evaluation_summary.md`
+* `evidence/matlab_summary.md`
