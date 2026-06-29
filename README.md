@@ -51,8 +51,7 @@ The checkpoint file itself is not uploaded because it is a large binary artifact
 
 ## Evaluation source of truth
 
-The final reported results are based on the official MATLAB evaluation. Earlier lightweight Python evaluation was used only as a preliminary sanity check and is not used as final evidence in this repository.
-
+The final reported results are based on the official MATLAB evaluation. 
 The full MATLAB table is recorded in:
 
 ```text
@@ -61,7 +60,7 @@ evidence/matlab_summary.md
 
 ## Excluded files
 
-Datasets, pretrained weights, checkpoint files, prediction masks, `.pth` files, `.mat` files, and other large generated artifacts are intentionally excluded.
+Datasets, pretrained weights, checkpoint files, prediction masks, `.pth` files, `.mat` files, and other large generated artifacts are excluded.
 
 ## Suggested reading order
 
@@ -72,4 +71,4 @@ Datasets, pretrained weights, checkpoint files, prediction masks, `.pth` files, 
 
 ## Scope statement
 
-This repository supports the June-stage PraNet baseline reproduction and evaluation. It should not be interpreted as a complete reproduction of every experiment and comparison table in the original PraNet paper. Polyp-PVT and HarDNet-MSEG are used as architectural and literature-review references elsewhere, but they are not re-trained or re-evaluated in this repository.
+This repository supports the June-stage PraNet baseline reproduction and evaluation. It should not be interpreted as a complete reproduction of every experiment and comparison table in the original PraNet paper.
