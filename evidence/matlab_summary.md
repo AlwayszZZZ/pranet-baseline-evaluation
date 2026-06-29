@@ -1,5 +1,7 @@
 # PraNet MATLAB Evaluation Summary
 
+This file records the complete MATLAB official evaluation table used as the quantitative source of truth for the main report.
+
 Mode: `full`
 
 | Dataset | Model | Images | meanDic | meanIoU | wFm | Sm | meanEm | MAE | maxEm | maxDice | maxIoU | meanSen | maxSen | meanSpe | maxSpe |
