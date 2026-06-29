@@ -19,4 +19,4 @@ The self-trained PraNet checkpoint was evaluated on five PraNet test datasets. I
 
 ## Notes
 
-The lightweight evaluation was used as an intermediate check. The main results used in the report are the MATLAB evaluation results in `evidence/matlab_summary.md`.
+The main results used in the report are the MATLAB evaluation results in `evidence/matlab_summary.md`.
