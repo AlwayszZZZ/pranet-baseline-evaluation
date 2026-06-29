@@ -1,146 +1,76 @@
 # PraNet Baseline Reproduction and Evaluation Report
 
-## 1. Purpose
+## 1. Purpose of the Report
 
-This report summarises the June-stage PraNet baseline reproduction and evaluation work for the dissertation project **Cross-Dataset Generalisation for Robust Polyp Segmentation**.
+This report summarises the completion of the PraNet baseline reproduction and evaluation work. Following the training procedure of PraNet, a self-trained checkpoint was obtained. Both the official PraNet weights and the self-trained weights were then tested and evaluated.
 
-The purpose of this work was to verify that the PraNet baseline could be trained and evaluated locally, and to establish a reliable evaluation pipeline for later cross-dataset generalisation analysis.
+## 2. Evaluation Settings
 
-This report focuses on PraNet. Polyp-PVT and HarDNet-MSEG were reviewed as related baseline architectures, but they were not re-trained or re-evaluated in this repository.
+The main parameters used in the training command were as follows: the number of epochs was set to 20, the batch size was 16, the input size was 352, and the training snapshot directory was `PraNet_Res2Net_20260622`.
 
-## 2. Scope
+The evaluation was conducted on the five test datasets provided in the PraNet project:
 
-The completed work includes:
+| Dataset           | Images | Description                                            |
+| ----------------- | -----: | ------------------------------------------------------ |
+| CVC-300           |     60 | Corresponds to CVC-T / EndoScene test set in the paper |
+| CVC-ClinicDB      |     62 | Test subset of CVC-612                                 |
+| Kvasir            |    100 | Kvasir-SEG test set                                    |
+| CVC-ColonDB       |    380 | Cross-dataset test set                                 |
+| ETIS-LaribPolypDB |    196 | Cross-dataset test set                                 |
 
-1. Training a self-trained PraNet checkpoint using the PraNet training pipeline.
-2. Evaluating the official PraNet checkpoint and the self-trained checkpoint with the official MATLAB evaluation protocol.
-3. Comparing the local re-evaluation of the official checkpoint with the published PraNet paper results.
-4. Summarising the cross-dataset performance pattern as preparation for the next research stage.
+The evaluation was performed using the MATLAB evaluation toolbox. The main metrics include mean Dice, mean IoU, weighted F-measure, S-measure, mean E-measure, and MAE.
 
-This report should not be interpreted as a full reproduction of every table, ablation study, and visual comparison in the original PraNet paper.
+## 3. Evaluation Results of PraNet Weights
 
-## 3. Training Reproduction
+The table below shows the main evaluation results of the official PraNet weights and the self-trained weights on the five test datasets.
 
-The self-trained checkpoint was produced on the remote workstation using the following training configuration.
+| Dataset           | Images | Model                   |  meanDic |  meanIoU |      wFm |       Sm |   meanEm |      MAE |
+| ----------------- | -----: | ----------------------- | -------: | -------: | -------: | -------: | -------: | -------: |
+| CVC-300           |     60 | PraNet                  | 0.870457 | 0.796006 | 0.843210 | 0.925425 | 0.949669 | 0.009863 |
+| CVC-300           |     60 | PraNet_Res2Net_20260622 | 0.878459 | 0.805805 | 0.851000 | 0.928175 | 0.955604 | 0.008747 |
+| CVC-ClinicDB      |     62 | PraNet                  | 0.898308 | 0.848239 | 0.896248 | 0.936104 | 0.962138 | 0.009354 |
+| CVC-ClinicDB      |     62 | PraNet_Res2Net_20260622 | 0.914265 | 0.862630 | 0.910597 | 0.940143 | 0.968714 | 0.009527 |
+| Kvasir            |    100 | PraNet                  | 0.893839 | 0.835452 | 0.880041 | 0.912484 | 0.939939 | 0.030416 |
+| Kvasir            |    100 | PraNet_Res2Net_20260622 | 0.896112 | 0.842618 | 0.886348 | 0.914973 | 0.941366 | 0.027578 |
+| CVC-ColonDB       |    380 | PraNet                  | 0.710777 | 0.639350 | 0.698603 | 0.820221 | 0.846401 | 0.042926 |
+| CVC-ColonDB       |    380 | PraNet_Res2Net_20260622 | 0.746260 | 0.667907 | 0.727682 | 0.836270 | 0.868881 | 0.036387 |
+| ETIS-LaribPolypDB |    196 | PraNet                  | 0.627555 | 0.565739 | 0.600759 | 0.793297 | 0.807621 | 0.030750 |
+| ETIS-LaribPolypDB |    196 | PraNet_Res2Net_20260622 | 0.648443 | 0.584684 | 0.617012 | 0.802088 | 0.823030 | 0.027702 |
 
-| Item | Value |
-| --- | --- |
-| Model | PraNet |
-| Backbone | Res2Net |
-| Epoch setting | 20 |
-| Batch size | 16 |
-| Input size | 352 |
-| Training data path | `./data/TrainDataset` |
-| Training save name | `PraNet_Res2Net_20260622` |
-| Final evaluated checkpoint | `PraNet_Res2Net_20260622/PraNet-19.pth` |
+The results show that PraNet performs well on Kvasir, CVC-ClinicDB, and CVC-300, but its scores decrease noticeably on CVC-ColonDB and ETIS-LaribPolypDB, indicating that its generalisation ability still needs improvement. The self-trained weights achieved slightly higher mean Dice and mean IoU scores than the official weights on all five test datasets. This suggests that the training process successfully produced an effective PraNet checkpoint.
 
-Training command:
+## 4. Comparison with the Results Reported in the PraNet Paper
 
-```bash
-python MyTrain.py --epoch 20 --batchsize 16 --trainsize 352 --train_path ./data/TrainDataset --train_save PraNet_Res2Net_20260622
-```
+To verify the reliability of the local evaluation pipeline, this report compares the re-evaluation results of the official PraNet weights with the published results reported in the PraNet paper.
 
-The final self-trained checkpoint is identified as:
+| Dataset                | Published meanDic | My official meanDic | Published meanIoU | My official meanIoU | Published MAE | My official MAE |
+| ---------------------- | ----------------: | ------------------: | ----------------: | ------------------: | ------------: | --------------: |
+| Kvasir                 |             0.898 |            0.893839 |             0.840 |            0.835452 |         0.030 |        0.030416 |
+| CVC-ClinicDB / CVC-612 |             0.899 |            0.898308 |             0.849 |            0.848239 |         0.009 |        0.009354 |
+| CVC-ColonDB            |             0.709 |            0.710777 |             0.640 |            0.639350 |         0.045 |        0.042926 |
+| ETIS-LaribPolypDB      |             0.628 |            0.627555 |             0.567 |            0.565739 |         0.031 |        0.030750 |
+| CVC-300 / CVC-T        |             0.871 |            0.870457 |             0.797 |            0.796006 |         0.010 |        0.009863 |
 
-```text
-Remote checkpoint path:
-~/projects/PraNet0607-1/snapshots/PraNet_Res2Net_20260622/PraNet-19.pth
+The results obtained by re-evaluating the official weights are generally consistent with the values reported in the paper. Minor numerical differences may be caused by implementation details such as image resizing, prediction map saving, MATLAB/Python/library versions, interpolation methods, or dataset package differences.
 
-SHA256:
-76c16089d589985618ff08c132c805b047ce62d2a1dc469cf07ee032a62753ee
-```
+## 5. Summary
 
-More training details are recorded in `evidence/training_summary.md`.
+In this stage, the local training and evaluation of PraNet were completed. The evaluation results are generally consistent with the published results in the PraNet paper. The results also show a clear performance drop on cross-dataset test sets, indicating that cross-dataset generalisation remains a key challenge.
 
-## 4. Evaluation Protocol
+This report mainly focuses on quantitative metrics. Visual comparison and failure case analysis have not yet been systematically included. In the next stage, visual results should be further analysed to investigate how small polyps, low-contrast regions, and boundary ambiguity affect model performance.
 
-The final reported results are based on the official MATLAB evaluation toolbox from the PraNet project.
+## 6. Reproducibility Notes
 
-Earlier lightweight Python evaluation was used only as a preliminary sanity check and is not used as final evidence in this report.
+The self-trained checkpoint used in this report is:
 
-Two checkpoints were evaluated:
+`snapshots/PraNet_Res2Net_20260622/PraNet-19.pth`
 
-| Model name in results | Meaning |
-| --- | --- |
-| `PraNet` | Official PraNet checkpoint |
-| `PraNet_Res2Net_20260622` | Self-trained PraNet checkpoint |
+The training run was completed successfully and saved the final checkpoint `PraNet-19.pth`. The corresponding training summary, checkpoint record, evaluation command, and MATLAB evaluation summary are available in the GitHub repository:
 
-The evaluation was conducted on five standard PraNet test datasets:
+[[GitHub evidence link](https://github.com/AlwayszZZZ/pranet-baseline-evaluation/)]
 
-| Dataset | Images | Description |
-| --- | ---: | --- |
-| CVC-300 | 60 | EndoScene / CVC-T test subset |
-| CVC-ClinicDB | 62 | CVC-612 test subset |
-| Kvasir | 100 | Kvasir-SEG test subset |
-| CVC-ColonDB | 380 | cross-dataset test set |
-| ETIS-LaribPolypDB | 196 | cross-dataset test set |
+Key supporting files:
 
-The main metrics reported here are mean Dice, mean IoU, weighted F-measure, S-measure, mean E-measure, and MAE. The complete MATLAB result table is provided in `evidence/matlab_summary.md`.
-
-## 5. MATLAB Evaluation Results
-
-The following table shows the main MATLAB evaluation results for the official PraNet checkpoint and the self-trained checkpoint.
-
-| Dataset | Images | Model | meanDic | meanIoU | wFm | Sm | meanEm | MAE |
-| --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| CVC-300 | 60 | PraNet | 0.870457 | 0.796006 | 0.843210 | 0.925425 | 0.949669 | 0.009863 |
-| CVC-300 | 60 | PraNet_Res2Net_20260622 | 0.878459 | 0.805805 | 0.851000 | 0.928175 | 0.955604 | 0.008747 |
-| CVC-ClinicDB | 62 | PraNet | 0.898308 | 0.848239 | 0.896248 | 0.936104 | 0.962138 | 0.009354 |
-| CVC-ClinicDB | 62 | PraNet_Res2Net_20260622 | 0.914265 | 0.862630 | 0.910597 | 0.940143 | 0.968714 | 0.009527 |
-| Kvasir | 100 | PraNet | 0.893839 | 0.835452 | 0.880041 | 0.912484 | 0.939939 | 0.030416 |
-| Kvasir | 100 | PraNet_Res2Net_20260622 | 0.896112 | 0.842618 | 0.886348 | 0.914973 | 0.941366 | 0.027578 |
-| CVC-ColonDB | 380 | PraNet | 0.710777 | 0.639350 | 0.698603 | 0.820221 | 0.846401 | 0.042926 |
-| CVC-ColonDB | 380 | PraNet_Res2Net_20260622 | 0.746260 | 0.667907 | 0.727682 | 0.836270 | 0.868881 | 0.036387 |
-| ETIS-LaribPolypDB | 196 | PraNet | 0.627555 | 0.565739 | 0.600759 | 0.793297 | 0.807621 | 0.030750 |
-| ETIS-LaribPolypDB | 196 | PraNet_Res2Net_20260622 | 0.648443 | 0.584684 | 0.617012 | 0.802088 | 0.823030 | 0.027702 |
-
-## 6. Comparison with Published PraNet Results
-
-To check whether the local evaluation pipeline is reliable, the official PraNet checkpoint was re-evaluated locally and compared with the published PraNet paper results. Published values are rounded as reported in the paper.
-
-| Dataset | Published meanDic | Local official meanDic | Published meanIoU | Local official meanIoU | Published MAE | Local official MAE |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Kvasir | 0.898 | 0.893839 | 0.840 | 0.835452 | 0.030 | 0.030416 |
-| CVC-ClinicDB / CVC-612 | 0.899 | 0.898308 | 0.849 | 0.848239 | 0.009 | 0.009354 |
-| CVC-ColonDB | 0.709 | 0.710777 | 0.640 | 0.639350 | 0.045 | 0.042926 |
-| ETIS-LaribPolypDB | 0.628 | 0.627555 | 0.567 | 0.565739 | 0.031 | 0.030750 |
-| CVC-300 / CVC-T | 0.871 | 0.870457 | 0.797 | 0.796006 | 0.010 | 0.009863 |
-
-The local official-checkpoint results are close to the published values. This supports the reliability of the local MATLAB evaluation pipeline. Small numerical differences may come from implementation details such as image resizing, prediction-map saving, interpolation settings, MATLAB/library versions, or dataset package details.
-
-## 7. Observations
-
-The self-trained checkpoint produced valid PraNet segmentation results across all five datasets. It performs well on Kvasir, CVC-ClinicDB, and CVC-300, and obtains higher mean Dice and mean IoU than the locally re-evaluated official checkpoint on all five datasets in this evaluation run.
-
-The results also show a clear cross-dataset performance drop. Both the official checkpoint and the self-trained checkpoint perform much lower on CVC-ColonDB and ETIS-LaribPolypDB than on Kvasir and CVC-ClinicDB. This pattern is consistent with the motivation of the dissertation project: models trained on one or several datasets may degrade on unseen datasets because of domain shift.
-
-## 8. Limitations
-
-This stage mainly focuses on quantitative evaluation. It does not yet include systematic visual comparison, failure-case categorisation, or detailed analysis of small polyps, low-contrast regions, boundary ambiguity, colour distribution changes, and other domain-shift factors.
-
-The current repository also does not include large artifacts such as datasets, prediction masks, model weights, or `.mat` files. These artifacts are kept outside this clean submission repository.
-
-## 9. Next Step
-
-The next stage should extend this baseline evaluation into cross-dataset analysis. The most important follow-up tasks are:
-
-1. collect visual examples from successful and failed cases;
-2. compare performance across seen-style and unseen datasets;
-3. analyse possible causes of degradation, including low contrast, boundary ambiguity, small objects, reflections, and colour distribution shift;
-4. use these findings to motivate domain adaptation or domain generalisation methods.
-
-## 10. Evidence Index
-
-Supporting files in this repository:
-
-```text
-evidence/training_summary.md
-evidence/evaluation_summary.md
-evidence/matlab_summary.md
-```
-
-Raw material and logs are kept in the material repository:
-
-```text
-https://github.com/AlwayszZZZ/codex-pranet-baseline-reproduction
-```
+* `evidence/remote_runs/20260622_pranet_train20/run_summary.md`
+* `evidence/remote_runs/20260622_selftrained_eval_pranet19/env_and_command.txt`
+* `evidence/matlab_evaluation/summary.md`
